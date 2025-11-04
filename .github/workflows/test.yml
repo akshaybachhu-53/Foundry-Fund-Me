@@ -19,8 +19,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
-          submodules: true       # ✅ Enable submodule fetching
-          fetch-depth: 0         # ✅ (Recommended) fetch full history to avoid shallow clone issues
+          submodules: true
+          fetch-depth: 0
+          persist-credentials: false
+          
+      - name: Init submodules (safety)
+        run: git submodule update --init --recursive
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -29,7 +33,7 @@ jobs:
         run: forge --version
 
       - name: Run Forge fmt
-        run: forge fmt --check   # ✅ safer for CI (just checks formatting)
+        run: forge fmt
 
       - name: Run Forge build
         run: forge build --sizes
@@ -39,3 +43,7 @@ jobs:
 
       - name: Run gas report
         run: forge test --gas-report
+
+      - name: List contents of lib folder
+        run: ls -R lib
+
