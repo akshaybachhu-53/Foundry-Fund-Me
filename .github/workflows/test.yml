@@ -26,6 +26,9 @@ jobs:
       - name: Init submodules (safety)
         run: git submodule update --init --recursive
 
+      - name: List contents of lib folder
+        run: ls -R lib
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
@@ -43,7 +46,3 @@ jobs:
 
       - name: Run gas report
         run: forge test --gas-report
-
-      - name: List contents of lib folder
-        run: ls -R lib
-
