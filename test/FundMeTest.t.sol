@@ -8,7 +8,7 @@ import {DeployFundMe} from "../script/DeployFundMe.s.sol";
 
 contract FundMeTest is Test {
     FundMe fundMe;
-    DeployFundMe deployFundMe ;
+    DeployFundMe deployFundMe;
 
     function setUp() external {
         // fundMe = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
@@ -38,6 +38,7 @@ contract FundMeTest is Test {
     function testChainId() public view {
         console.log("Chain Id: ", block.chainid);
     }
+
     function testDeployFundMeOwner() public view {
         assertEq(deployFundMe.deployer(), address(this));
     }

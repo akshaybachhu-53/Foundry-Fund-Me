@@ -7,9 +7,11 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeployFundMe is Script {
     address public deployer;
+
     constructor() {
         deployer = msg.sender;
     }
+
     function run() external returns (FundMe) {
         // Before startBroadcast -> Not a real tx foundry just gon'a simulate it
         HelperConfig helperConfig = new HelperConfig();
