@@ -3,8 +3,8 @@
 pragma solidity ^0.8.30;
 
 import {Test, console} from "forge-std/Test.sol";
-import {FundMe} from "../src/FundMe.sol";
-import {DeployFundMe} from "../script/DeployFundMe.s.sol";
+import {FundMe} from "../../src/FundMe.sol";
+import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 
 contract FundMeTest is Test {
     FundMe fundMe;
@@ -136,6 +136,30 @@ contract FundMeTest is Test {
         // Act
         vm.startPrank(fundMe.getOwner());
         fundMe.withdraw();
+        vm.stopPrank();
+
+        // Assert
+        uint256 endingOwnerBalance = fundMe.getOwner().balance;
+        uint256 endingFundMeBalance = address(fundMe).balance;
+        assertEq(endingFundMeBalance, 0);
+        assertEq(startingOwnerBalance + startingFundMeBalance, endingOwnerBalance);
+    }
+
+    function testWithdrawFromMultipleFundersCheaper() public funded {
+        // Arrange
+        uint160 numberOfFunders = 10;
+        uint160 startingFunderIndex = 1;
+        for (uint160 i = startingFunderIndex; i < numberOfFunders; i++) {
+            hoax(address(i), SEND_VALUE);
+            fundMe.fund{value: SEND_VALUE}();
+        }
+
+        uint256 startingOwnerBalance = fundMe.getOwner().balance; // This is a EOA 0x18..
+        uint256 startingFundMeBalance = address(fundMe).balance;
+
+        // Act
+        vm.startPrank(fundMe.getOwner());
+        fundMe.cheaperWithdraw();
         vm.stopPrank();
 
         // Assert
