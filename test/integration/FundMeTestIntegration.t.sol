@@ -4,13 +4,13 @@ pragma solidity ^0.8.30;
 
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
-import {DeployFundMe} from "../../script/DeployFundMe.s.sol"; 
+import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 import {FundFundMe, WithdrawFundMe} from "../../script/Interactions.s.sol";
 
 contract InteractionsTest is Test {
     FundMe fundMe;
 
-    address USER = makeAddr("user"); 
+    address USER = makeAddr("user");
     uint256 constant SEND_VALUE = 0.1 ether;
     uint256 constant STARTING_BALANCE = 10 ether;
     uint256 constant GAS_PRICE = 1;
@@ -20,6 +20,7 @@ contract InteractionsTest is Test {
         fundMe = deploy.run();
         vm.deal(USER, STARTING_BALANCE); // give user ETH if needed
     }
+
     function testUserCanFundInteractions() public {
         FundFundMe fundFundMe = new FundFundMe();
         // vm.prank(USER); Don't use prank here gives error
